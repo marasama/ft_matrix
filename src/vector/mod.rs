@@ -1,12 +1,19 @@
 use core::fmt;
-use std::{any::type_name_of_val, fmt::{Debug, Display}, ops::{Add, AddAssign, Sub, SubAssign}};
 use num_traits::Float;
+use std::{
+    any::type_name_of_val,
+    fmt::{Debug, Display},
+    ops::{Add, AddAssign, Sub, SubAssign},
+};
 
 pub struct Vector<K: Float> {
     pub data: Vec<K>,
 }
 
-impl<K> fmt::Display for Vector<K> where K: Display + Float {
+impl<K> fmt::Display for Vector<K>
+where
+    K: Display + Float,
+{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let precision = f.precision().unwrap_or(2);
         // let max_len = format!("{:.prec$}", self.data.iter().max().unwrap_or(&K::zero()), prec = precision).len();
@@ -24,7 +31,10 @@ impl<K> fmt::Display for Vector<K> where K: Display + Float {
     }
 }
 
-impl<K> fmt::Debug for Vector<K> where K: Debug + Display + Float {
+impl<K> fmt::Debug for Vector<K>
+where
+    K: Debug + Display + Float,
+{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let precision = f.precision().unwrap_or(2);
         // let max_len = format!("{:.prec$}", self.data.iter().max().unwrap_or(&K::zero()), prec = precision).len();
@@ -43,9 +53,14 @@ impl<K> fmt::Debug for Vector<K> where K: Debug + Display + Float {
     }
 }
 
-impl<K> Vector<K> where K: Add + AddAssign + Sub + SubAssign + Float {
+impl<K> Vector<K>
+where
+    K: Add + AddAssign + Sub + SubAssign + Float,
+{
     pub fn new(new_data: Vec<K>) -> Vector<K> {
-        Vector { data: new_data.clone() }
+        Vector {
+            data: new_data.clone(),
+        }
     }
     /// Returns the size of Vector
     pub fn size(&self) -> usize {
@@ -57,7 +72,7 @@ impl<K> Vector<K> where K: Add + AddAssign + Sub + SubAssign + Float {
             self.data[i] -= other.data[i];
         }
     }
-    
+
     pub fn add(&mut self, other: &Vector<K>) {
         for i in 0..self.size() {
             self.data[i] += other.data[i];
@@ -72,8 +87,8 @@ impl<K> Vector<K> where K: Add + AddAssign + Sub + SubAssign + Float {
 }
 
 /// From Array
-impl<K: Float, const N: usize> From<[K;N]> for Vector<K> {
+impl<K: Float, const N: usize> From<[K; N]> for Vector<K> {
     fn from(a: [K; N]) -> Vector<K> {
-        Vector { data: Vec::from(a)}
+        Vector { data: Vec::from(a) }
     }
 }

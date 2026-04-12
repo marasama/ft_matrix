@@ -9,7 +9,10 @@ pub struct Matrix<K: Float> {
     pub cols: usize,
 }
 
-impl<K> Matrix<K> where K: Float + Add + Sub + AddAssign + SubAssign {
+impl<K> Matrix<K>
+where
+    K: Float + Add + Sub + AddAssign + SubAssign,
+{
     /// Size value function
     /// Returns (rows, cols) in usize
     pub fn size(&self) -> (usize, usize) {
