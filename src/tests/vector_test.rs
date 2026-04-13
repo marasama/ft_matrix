@@ -1,5 +1,6 @@
 #[allow(unused_imports)]
 use super::*;
+use crate::vector::funcs::lin_comb::linear_combination;
 use crate::vector::Vector;
 
 #[test]
@@ -24,8 +25,51 @@ fn size_of_vector() {
 }
 
 #[test]
-fn sub_vector() {
-    let a: Vector<f64> = Vector::from([1.2, 0.2, 0.4, 6.]);
-    let mut b: Vector<f64> = Vector::from([2.4, 0.1, 0.2, 3.]);
-    b.sub(&a);
+fn is_equal() {
+    let a: Vector<f64> = Vector::from([12., 32., 4.2, 412.2, 241.41]);
+    let b: Vector<f64> = Vector::from([11., 32., 4.2, 412.2, 241.41]);
+    assert!(a != b);
+}
+
+#[test]
+fn vector_add() {
+    let mut a = Vector::from([12., 24., 36.]);
+    let b = Vector::from([12., 24., 36.]);
+    let res = Vector::from([24., 48., 72.]);
+    a.add(&b);
+    assert_eq!(a, res);
+}
+
+#[test]
+fn vector_sub() {
+    let mut a = Vector::from([24., 48., 72.]);
+    let b = Vector::from([12., 24., 36.]);
+    let res = Vector::from([12., 24., 36.]);
+    a.sub(&b);
+    assert_eq!(a, res);
+}
+
+#[test]
+fn vector_scl() {
+    let mut a = Vector::from([24., 48., 72.]);
+    let b = 0.5;
+    let res = Vector::from([12., 24., 36.]);
+    a.scl(b);
+    assert_eq!(a, res);
+}
+
+#[test]
+fn lin_comb() {
+    let e1 = Vector::from([1., 0., 0.]);
+    let e2 = Vector::from([0., 1., 0.]);
+    let e3 = Vector::from([0., 0., 1.]);
+
+    let v1 = Vector::from([1., 2., 3.]);
+    let v2 = Vector::from([0., 10., -100.]);
+
+    let res_e = linear_combination(&[e1, e2, e3], &[10., -2., 0.5]);
+    let res_v = linear_combination(&[v1, v2], &[10., -2.]);
+
+    assert_eq!(res_e.data, vec![10., -2., 0.5]);
+    assert_eq!(res_v.data, vec![10., 0., 230.]);
 }
