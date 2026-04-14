@@ -6,7 +6,7 @@ where
     K: Display + Float,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let precision = f.precision().unwrap_or(2);
+        let precision = f.precision().unwrap_or(20);
         let max_len = self
             .data
             .iter()

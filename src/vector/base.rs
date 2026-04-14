@@ -57,7 +57,7 @@ where
 
 impl<K> Vector<K>
 where
-    K: Add + Sub + Float,
+    K: Float,
 {
     pub fn new(new_data: Vec<K>) -> Vector<K> {
         Vector {
@@ -69,7 +69,10 @@ where
         self.data.len()
     }
 
-    pub fn sub(&mut self, other: &Vector<K>) {
+    pub fn sub(&mut self, other: &Vector<K>)
+    where
+        K: Sub,
+    {
         assert_eq!(
             self.data.len(),
             other.data.len(),
@@ -80,7 +83,10 @@ where
         }
     }
 
-    pub fn add(&mut self, other: &Vector<K>) {
+    pub fn add(&mut self, other: &Vector<K>)
+    where
+        K: Add,
+    {
         assert_eq!(
             self.data.len(),
             other.data.len(),
@@ -108,7 +114,7 @@ impl<K: Float, const N: usize> From<[K; N]> for Vector<K> {
 impl<K: Float> PartialEq<Vector<K>> for Vector<K> {
     fn eq(&self, other: &Vector<K>) -> bool {
         for (a, b) in self.data.iter().zip(&other.data) {
-            if (*a - *b).abs() > K::epsilon() {
+            if (*a - *b).abs() > K::from(1e-6).unwrap() {
                 return false;
             }
         }

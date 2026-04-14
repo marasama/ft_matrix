@@ -3,6 +3,16 @@
 version = 4
 
 [[package]]
+name = "approx"
+version = "0.6.0-rc2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94fbdd65cc59dcc820bfb0fd01315963d4f9898bf3399a47134c9836698c47df"
+dependencies = [
+ "num-traits",
+ "paste",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -18,8 +28,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "paste"
+version = "1.0.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
+
+[[package]]
 name = "zort"
 version = "0.1.0"
 dependencies = [
+ "approx",
  "num-traits",
 ]

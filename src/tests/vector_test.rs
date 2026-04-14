@@ -1,5 +1,7 @@
 #[allow(unused_imports)]
 use super::*;
+use crate::vector::funcs::cosine::angle_cos;
+use crate::vector::funcs::cross::cross_product;
 use crate::vector::funcs::lin_comb::linear_combination;
 use crate::vector::Vector;
 
@@ -72,4 +74,85 @@ fn lin_comb() {
 
     assert_eq!(res_e.data, vec![10., -2., 0.5]);
     assert_eq!(res_v.data, vec![10., 0., 230.]);
+}
+
+#[test]
+fn dot_test() {
+    let u = Vector::from([0., 0.]);
+    let v = Vector::from([1., 1.]);
+    assert_eq!(0.0, u.dot(v));
+    // 0.0
+    let u = Vector::from([1., 1.]);
+    let v = Vector::from([1., 1.]);
+    assert_eq!(2.0, u.dot(v));
+    // 2.0
+    let u = Vector::from([-1., 6.]);
+    let v = Vector::from([3., 2.]);
+    assert_eq!(9.0, u.dot(v));
+    // 9.0
+}
+
+#[test]
+fn norm_test() {
+    let mut u = Vector::from([0., 0., 0.]);
+    assert_eq!(u.norm_1(), 0.0);
+    assert_eq!(u.norm(), 0.0);
+    assert_eq!(u.norm_inf(), 0.0);
+    // 0.0, 0.0, 0.0
+    let mut u = Vector::from([1., 2., 3.]);
+    assert_eq!(u.norm_1(), 6.0);
+    assert_eq!(u.norm(), 3.74165738);
+    assert_eq!(u.norm_inf(), 3.0);
+    // 6.0, 3.74165738, 3.0
+    let mut u = Vector::from([-1., -2.]);
+    assert_eq!(u.norm_1(), 3.0);
+    assert_eq!(u.norm(), 2.236067977);
+    assert_eq!(u.norm_inf(), 2.0);
+    // 3.0, 2.236067977, 2.0
+}
+
+#[test]
+fn cosine_test() {
+    let u = Vector::from([1., 0.]);
+    let v = Vector::from([1., 0.]);
+    assert_eq!(1.0, angle_cos(&u, &v));
+    // 1.0
+    let u = Vector::from([1., 0.]);
+    let v = Vector::from([0., 1.]);
+    assert_eq!(0.0, angle_cos(&u, &v));
+    // 0.0
+    let u = Vector::from([-1., 1.]);
+    let v = Vector::from([1., -1.]);
+    assert_eq!(-1.0000001, angle_cos(&u, &v));
+    // -1.0
+    let u = Vector::from([2., 1.]);
+    let v = Vector::from([4., 2.]);
+    assert_eq!(1.0, angle_cos(&u, &v));
+    // 1.0
+    let u = Vector::from([1., 2., 3.]);
+    let v = Vector::from([4., 5., 6.]);
+    assert_eq!(0.974_631_8, angle_cos(&u, &v));
+    // 0.974631846
+}
+
+#[test]
+fn cross_product_test() {
+    let u = Vector::from([0., 0., 1.]);
+    let v = Vector::from([1., 0., 0.]);
+    assert_eq!(Vector::from([0., 1., 0.]), cross_product(&u, &v));
+    // [0.]
+    // [1.]
+    // [0.]
+    let u = Vector::from([1., 2., 3.]);
+    let v = Vector::from([4., 5., 6.]);
+    assert_eq!(Vector::from([-3., 6., -3.]), cross_product(&u, &v));
+    // [-3.]
+    // [6.]
+    // [-3.]
+    let u = Vector::from([4., 2., -3.]);
+    let v = Vector::from([-2., -5., 16.]);
+    assert_eq!(Vector::from([17., -58., -16.]), cross_product(&u, &v));
+    // [17.]
+    // [-58.]
+    // [-16.]
 }

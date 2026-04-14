@@ -1,6 +1,7 @@
 use crate::commons::lerp_mul_add::lerp;
 use crate::matrix::Matrix;
 use crate::vector::Vector;
+
 #[test]
 fn test_lerp() {
     let a = lerp(0., 1., 0.);
