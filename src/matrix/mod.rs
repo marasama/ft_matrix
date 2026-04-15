@@ -12,3 +12,5 @@ pub struct Matrix<K: Float> {
 mod base;
 
 mod printing;
+
+pub mod funcs;
