@@ -1,6 +1,7 @@
 #[allow(unused_imports)]
 use super::*;
 use crate::matrix::Matrix;
+use crate::vector::Vector;
 
 #[test]
 fn new_matrix_from_vec() {
@@ -59,4 +60,92 @@ fn matrix_scl() {
     let res = Matrix::from([[0.6, 1.2, 2.4], [1.2, 2.4, 4.8], [2.4, 4.8, 9.6]]);
     a.scl(b);
     assert_eq!(a, res);
+}
+
+#[test]
+fn multiply_test1() {
+    let mut u = Matrix::from([
+        [1., 0.],
+        [0., 1.],
+        ]);
+    let v = Vector::from([4., 2.]);
+    assert_eq!((Vector::from([4., 2.])), u.mul_vec(v));
+    // [4.]
+    // [2.]
+    let mut u = Matrix::from([
+    [2., 0.],
+    [0., 2.],
+    ]);
+    let v = Vector::from([4., 2.]);
+    assert_eq!(Vector::from([8., 4.]), u.mul_vec(v));
+    // [8.]
+    // [4.]
+    let mut u = Matrix::from([
+    [2., -2.],
+    [-2., 2.],
+    ]);
+    let v = Vector::from([4., 2.]);
+    assert_eq!(Vector::from([4., -4.]), u.mul_vec(v));
+    // [4.]
+    // [-4.]
+}
+
+#[test]
+fn multiply_test2() {
+    let mut u = Matrix::from([
+    [1., 0.],
+    [0., 1.],
+    ]);
+    let v = Matrix::from([
+    [1., 0.],
+    [0., 1.],]);
+    println!("{}", u.mul_mat(v));
+    // [1., 0.]
+    // [0., 1.]
+    let mut u = Matrix::from([
+    [1., 0.],
+    [0., 1.],
+    ]);
+    let v = Matrix::from([
+    [2., 1.],
+    [4., 2.],
+    ]);
+    println!("{}", u.mul_mat(v));
+    // [2., 1.]
+    // [4., 2.]
+    let mut u = Matrix::from([
+    [3., -5.],
+    [6., 8.],
+    ]);
+    let v = Matrix::from([
+    [2., 1.],
+    [4., 2.],
+    ]);
+    println!("{}", u.mul_mat(v));
+    // [-14., -7.]
+    // [44., 22.]
+}
+
+#[test]
+fn trace_test() {
+    let mut u = Matrix::from([
+    [1., 0.],
+    [0., 1.],
+    ]);
+    println!("{}", u.trace());
+    // 2.0
+    let mut u = Matrix::from([
+    [2., -5., 0.],
+    [4., 3., 7.],
+    [-2., 3., 4.],
+    ]);
+    println!("{}", u.trace());
+    // 9.0
+    let mut u = Matrix::from([
+    [-2., -8., 4.],
+    [1., -23., 4.],
+    [0., 6., 4.],
+    ]);
+    println!("{}", u.trace());
+    // -21.0
 }
