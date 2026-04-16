@@ -132,20 +132,79 @@ fn trace_test() {
     [1., 0.],
     [0., 1.],
     ]);
-    println!("{}", u.trace());
+    assert_eq!(2.0, u.trace());
     // 2.0
     let mut u = Matrix::from([
     [2., -5., 0.],
     [4., 3., 7.],
     [-2., 3., 4.],
     ]);
-    println!("{}", u.trace());
+    assert_eq!(9.0, u.trace());
     // 9.0
     let mut u = Matrix::from([
     [-2., -8., 4.],
     [1., -23., 4.],
     [0., 6., 4.],
     ]);
-    println!("{}", u.trace());
+    assert_eq!(-21.0, u.trace());
     // -21.0
+}
+
+#[test]
+fn transpose_test() {
+    let mut u = Matrix::from([
+        [1., 2., 3.],
+        [4., 5., 6.]
+    ]);
+    println!("{}", &u);
+    assert_eq!(Matrix::from([[1., 4.], [2., 5.], [3., 6.]]), u.transpose());
+    // [1., 4.]
+    // [2., 5.]
+    // [3., 6.]
+}
+
+#[test]
+fn row_echolon_test() {
+    let mut u = Matrix::from([
+        [1., 3., 1., 9.],
+        [1., 1., -1., 1.,],
+        [3., 11., 5., 35.]]);
+
+    println!("{:?}", u.row_echelon());
+    // [1., 0.,-2.,-3.]
+    // [0., 1., 1., 4.]
+    // [0., 0., 0., 0.]
+
+    let mut u = Matrix::from([
+    [1., 0., 0.],
+    [0., 1., 0.],
+    [0., 0., 1.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.0, 0.0]
+    // [0.0, 1.0, 0.0]
+    // [0.0, 0.0, 1.0]
+    let mut u = Matrix::from([
+    [1., 2.],
+    [3., 4.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.0]
+    // [0.0, 1.0]
+    let mut u = Matrix::from([
+    [1., 2.],
+    [2., 4.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 2.0]
+    // [0.0, 0.0]
+    let mut u = Matrix::from([
+    [8., 5., -2., 4., 28.],
+    [4., 2.5, 20., 4., -4.],
+    [8., 5., 1., 4., 17.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.625, 0.0, 0.0, -12.1666667]
+    // [0.0, 0.0, 1.0, 0.0, -3.6666667]
+    // [0.0, 0.0, 0.0, 1.0, 29.5 ]
 }

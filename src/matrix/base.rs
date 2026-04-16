@@ -1,5 +1,5 @@
 use super::*;
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Index, IndexMut, Mul, Sub};
 
 impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
     fn from(value: [[K; C]; R]) -> Self {
@@ -158,5 +158,12 @@ impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
             }
         }
         true
+    }
+}
+
+impl<K: Float> Index<usize> for Matrix<K> {
+    type Output = K;
+    fn index(&self, index: usize) -> &Self::Output {
+       &self.data[index] 
     }
 }
