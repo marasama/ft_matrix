@@ -63,24 +63,23 @@ impl<K: Float> Matrix<K> {
         let mut pivot_col = 0;
 
         while pivot_row < new_matrix.rows && pivot_col < new_matrix.cols {
-            // Find the first non-zero entry in this column at or below pivot_row
-            let maybe_i = (pivot_row..new_matrix.rows).find(|&r| {
-                let val = new_matrix.data[r * new_matrix.cols + pivot_col];
-                val.abs() > K::epsilon() // Use epsilon, not == zero
-            });
+            // Pivot'un altındaki en büyük 0'dan farklı değeri alır
+            if let Some(i) = (pivot_row..new_matrix.rows).max_by(|&a, &b| {
+                let val = |r| new_matrix.row_col_val(r, pivot_col).abs();
+                val(a).partial_cmp(&val(b)).unwrap()
+            }).filter(|&r| new_matrix.row_col_val(r, pivot_col).abs() > K::epsilon()) {
 
-            if let Some(i) = maybe_i {
                 new_matrix.switch_rows(pivot_row, i);
 
                 let pivot_val = new_matrix.data[pivot_row * new_matrix.cols + pivot_col];
-
-                // Normalize the pivot row so pivot becomes 1
+                // Pivotu 1 yapmak için bütün satırı pivota bölüyoruz
                 for j in 0..new_matrix.cols {
                     new_matrix.data[pivot_row * new_matrix.cols + j] =
                         new_matrix.data[pivot_row * new_matrix.cols + j] / pivot_val;
                 }
 
-                // Eliminate ALL other rows (both above and below) — this is what makes it RREF
+                // Pivot satırı dışındaki bütün satırları 0'a eşitlemek için 
+                // pivot satırı ile orantılayıp çıkartıyoruz
                 for l in 0..new_matrix.rows {
                     if l == pivot_row {
                         continue;
@@ -92,7 +91,6 @@ impl<K: Float> Matrix<K> {
                             new_matrix.data[l * new_matrix.cols + m] - subtrahend;
                     }
                 }
-
                 pivot_row += 1;
             }
             pivot_col += 1;
