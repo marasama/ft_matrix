@@ -9,6 +9,10 @@ impl<K: Float> Matrix<K> {
                 new_vec[j * self.rows + i] = self.row_col_val(i, j);
             }
         }
-        Matrix {data: new_vec, rows: self.cols, cols: self.rows}
+        Matrix {
+            data: new_vec,
+            rows: self.cols,
+            cols: self.rows,
+        }
     }
 }

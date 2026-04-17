@@ -19,11 +19,13 @@ impl<K: Float> Matrix<K> {
 
         while pivot_row < new_matrix.rows && pivot_col < new_matrix.cols {
             // Pivot'un altındaki en büyük 0'dan farklı değeri alır
-            if let Some(i) = (pivot_row..new_matrix.rows).max_by(|&a, &b| {
-                let val = |r| new_matrix.row_col_val(r, pivot_col).abs();
-                val(a).partial_cmp(&val(b)).unwrap()
-            }).filter(|&r| new_matrix.row_col_val(r, pivot_col).abs() > K::epsilon()) {
-
+            if let Some(i) = (pivot_row..new_matrix.rows)
+                .max_by(|&a, &b| {
+                    let val = |r| new_matrix.row_col_val(r, pivot_col).abs();
+                    val(a).partial_cmp(&val(b)).unwrap()
+                })
+                .filter(|&r| new_matrix.row_col_val(r, pivot_col).abs() > K::epsilon())
+            {
                 new_matrix.switch_rows(pivot_row, i);
 
                 let pivot_val = new_matrix.data[pivot_row * new_matrix.cols + pivot_col];
@@ -33,7 +35,7 @@ impl<K: Float> Matrix<K> {
                         new_matrix.data[pivot_row * new_matrix.cols + j] / pivot_val;
                 }
 
-                // Pivot satırı dışındaki bütün satırları 0'a eşitlemek için 
+                // Pivot satırı dışındaki bütün satırları 0'a eşitlemek için
                 // pivot satırı ile orantılayıp çıkartıyoruz
                 for l in 0..new_matrix.rows {
                     if l == pivot_row {

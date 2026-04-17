@@ -164,6 +164,6 @@ impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
 impl<K: Float> Index<usize> for Matrix<K> {
     type Output = K;
     fn index(&self, index: usize) -> &Self::Output {
-       &self.data[index] 
+        &self.data[index]
     }
 }
