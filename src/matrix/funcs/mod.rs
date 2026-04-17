@@ -3,3 +3,4 @@ pub mod trace;
 pub mod transpose;
 pub mod row_echolon;
 pub mod determinant;
+pub mod rank;
