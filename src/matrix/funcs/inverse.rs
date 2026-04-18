@@ -1,7 +1,7 @@
 use crate::matrix::Matrix;
 use num_traits::Float;
 
-/// Return a square identity matrix at given size
+/// Returns a square identity matrix at given size
 pub fn identity_matrix<K: Float>(r_c: usize) -> Matrix<K> {
     let mut id_data = vec![K::zero(); r_c * r_c];
     for i in 0..r_c {
