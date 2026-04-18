@@ -21,11 +21,13 @@ impl<K: Float> Matrix<K> {
                 }
 
                 for i in 0..new.rows {
-                    if i == piv_row {continue;}
+                    if i == piv_row {
+                        continue;
+                    }
 
                     let factor = new.data[i * new.cols + piv_col];
                     for j in 0..new.cols {
-                        let subtrahend = new.data[i * new.cols + j] * factor;
+                        let subtrahend = new.data[piv_row * new.cols + j] * factor;
                         new.data[i * new.cols + j] = new.data[i * new.cols + j] - subtrahend;
                     }
                 }
@@ -54,11 +56,13 @@ impl<K: Float> Matrix<K> {
                 }
 
                 for i in 0..new.rows {
-                    if i == piv_row {continue;}
+                    if i == piv_row {
+                        continue;
+                    }
 
                     let factor = new.data[i * new.cols + piv_col];
                     for j in 0..new.cols {
-                        let subtrahend = new.data[i * new.cols + j] * factor;
+                        let subtrahend = new.data[piv_row * new.cols + j] * factor;
                         new.data[i * new.cols + j] = new.data[i * new.cols + j] - subtrahend;
                     }
                 }

@@ -1,5 +1,5 @@
 use super::*;
-use std::ops::{Add, Index, IndexMut, Mul, Sub};
+use std::ops::{Add, Index, Mul, Sub};
 
 impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
     fn from(value: [[K; C]; R]) -> Self {

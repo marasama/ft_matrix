@@ -1,4 +1,5 @@
 pub mod determinant;
+pub mod inverse;
 pub mod multiply;
 pub mod rank;
 pub mod row_echolon;
