@@ -1,3 +1,5 @@
+use crate::MATRIX_EPS;
+
 use super::*;
 use std::ops::{Add, Index, Mul, Sub};
 
@@ -153,7 +155,7 @@ where
 impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
     fn eq(&self, other: &Matrix<K>) -> bool {
         for (a, b) in self.data.iter().zip(&other.data) {
-            if (*a - *b).abs() > K::epsilon() {
+            if (*a - *b).abs() > K::from(MATRIX_EPS).unwrap_or(K::epsilon()) {
                 return false;
             }
         }

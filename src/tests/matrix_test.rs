@@ -133,16 +133,22 @@ fn row_echelon_test() {
     // [0., 0., 0., 0.]
 
     let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    let result_mat = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
     println!("{}", u.row_echelon());
+    assert_eq!(result_mat, u.row_echelon());
     // [1.0, 0.0, 0.0]
     // [0.0, 1.0, 0.0]
     // [0.0, 0.0, 1.0]
     let mut u = Matrix::from([[1., 2.], [3., 4.]]);
+    let result_mat = Matrix::from([[1., 0.], [0., 1.]]);
     println!("{}", u.row_echelon());
+    assert_eq!(result_mat, u.row_echelon());
     // [1.0, 0.0]
     // [0.0, 1.0]
     let mut u = Matrix::from([[1., 2.], [2., 4.]]);
+    let result_mat = Matrix::from([[1., 2.], [0., 0.]]);
     println!("{}", u.row_echelon());
+    assert_eq!(result_mat, u.row_echelon());
     // [1.0, 2.0]
     // [0.0, 0.0]
     let mut u = Matrix::from([
@@ -150,7 +156,11 @@ fn row_echelon_test() {
         [4., 2.5, 20., 4., -4.],
         [8., 5., 1., 4., 17.],
     ]);
-    println!("{:.4}", u.row_echelon());
+    let result_mat = Matrix::from([[1.0, 0.625, 0.0, 0.0, -12.1666667],
+                                    [0.0, 0.0, 1.0, 0.0, -3.6666667],
+                                    [0.0, 0.0, 0.0, 1.0, 29.5]]);
+    println!("{}", u.row_echelon());
+    assert_eq!(result_mat, u.row_echelon());
     // [1.0, 0.625, 0.0, 0.0, -12.1666667]
     // [0.0, 0.0, 1.0, 0.0, -3.6666667]
     // [0.0, 0.0, 0.0, 1.0, 29.5 ]
@@ -163,9 +173,11 @@ fn determinant_test() {
     // 0.0
     let mut u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
     println!("{}", u.determinant());
+    assert_eq!(8.0, u.determinant());
     // 8.0
     let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
     println!("{}", u.determinant());
+    assert_eq!(-174.00000000000003, u.determinant());
     // -174.0
     let mut u = Matrix::from([
         [8., 5., -2., 4.],
@@ -174,6 +186,7 @@ fn determinant_test() {
         [28., -4., 17., 1.],
     ]);
     println!("{}", u.determinant());
+    assert_eq!(1032.0, u.determinant());
     // 1032
 }
 
@@ -181,12 +194,15 @@ fn determinant_test() {
 fn rank_test() {
     let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
     println!("{}", u.rank());
+    assert_eq!(3, u.rank());
     // 3
     let mut u = Matrix::from([[1., 2., 0., 0.], [2., 4., 0., 0.], [-1., 2., 1., 1.]]);
     println!("{}", u.rank());
+    assert_eq!(2, u.rank());
     // 2
     let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.], [21., 18., 7.]]);
     println!("{}", u.rank());
+    assert_eq!(3, u.rank());
     // 3
 }
 
@@ -194,16 +210,23 @@ fn rank_test() {
 fn inverse_test() {
     let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
     println!("{}", u.inverse());
+    assert_eq!(Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]), u.inverse());
     // [1.0, 0.0, 0.0]
     // [0.0, 1.0, 0.0]
     // [0.0, 0.0, 1.0]
     let mut u = Matrix::from([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
     println!("{}", u.inverse());
+    assert_eq!(Matrix::from([[0.5, 0., 0.], [0., 0.5, 0.], [0., 0., 0.5]]), u.inverse());
     // [0.5, 0.0, 0.0]
     // [0.0, 0.5, 0.0]
     // [0.0, 0.0, 0.5]
     let mut u = Matrix::from([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
-    println!("{:.10}", u.inverse());
+    let result_mat = Matrix::from([[0.649425287356, 0.097701149425, -0.655172413793],
+                                        [-0.781609195402, -0.126436781609, 0.965517241379],
+                                        [0.143678160920, 0.074712643678, -0.206896551724]]);
+    println!("{:.12?}", u.inverse());
+    println!("{:.12?}", result_mat);
+    assert_eq!(result_mat, u.inverse());
     // [0.649425287, 0.097701149, -0.655172414]
     // [-0.781609195, -0.126436782, 0.965517241]
     // [0.143678161, 0.074712644, -0.206896552]

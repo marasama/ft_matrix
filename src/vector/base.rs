@@ -1,3 +1,4 @@
+use crate::VECTOR_EPS;
 use super::*;
 use std::ops::Mul;
 
@@ -114,7 +115,7 @@ impl<K: Float, const N: usize> From<[K; N]> for Vector<K> {
 impl<K: Float> PartialEq<Vector<K>> for Vector<K> {
     fn eq(&self, other: &Vector<K>) -> bool {
         for (a, b) in self.data.iter().zip(&other.data) {
-            if (*a - *b).abs() > K::from(1e-6).unwrap() {
+            if (*a - *b).abs() > K::from(VECTOR_EPS).unwrap_or(K::epsilon()) {
                 return false;
             }
         }
