@@ -1,3 +1,4 @@
+use std::error::Error;
 use crate::matrix::Matrix;
 use num_traits::Float;
 
@@ -18,7 +19,7 @@ impl<K: Float> Matrix<K> {
     // Gauss elemesiyle aynı sadece uyguladığın
     // eleme işlemlerinin aynısını birim matrise de
     // uyguluyorsun
-    pub fn inverse(&mut self) -> Matrix<K> {
+    pub fn inverse(&mut self) -> Result<Matrix<K>, Box<dyn Error>> {
         assert_eq!(
             self.rows, self.cols,
             "Error: Matrix must be NxN size to calculate its inverse!"
@@ -71,6 +72,6 @@ impl<K: Float> Matrix<K> {
             }
             piv_col += 1;
         }
-        idt_mat
+        Ok(idt_mat)
     }
 }
