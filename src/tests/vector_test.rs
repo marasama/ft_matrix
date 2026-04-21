@@ -1,5 +1,3 @@
-#[allow(unused_imports)]
-use super::*;
 use crate::vector::funcs::cosine::angle_cos;
 use crate::vector::funcs::cross::cross_product;
 use crate::vector::funcs::lin_comb::linear_combination;

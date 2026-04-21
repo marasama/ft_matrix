@@ -13,9 +13,10 @@ pub fn cross_product<K: Float>(u: &Vector<K>, v: &Vector<K>) -> Vector<K> {
         "Error: Vector size must be 3 for cross-product!"
     );
     let new_data: Vec<K> = vec![
-        ((u.data[1] * v.data[2]) - (u.data[2] * v.data[1])),
-        ((u.data[2] * v.data[0]) - (u.data[0] * v.data[2])),
-        ((u.data[0] * v.data[1]) - (u.data[1] * v.data[0])),
+        u.data[1].mul_add(v.data[2], -(u.data[2] * v.data[1])),
+        u.data[2].mul_add(v.data[0], -(u.data[0] * v.data[2])),
+        u.data[0].mul_add(v.data[1], -(u.data[1] * v.data[0])),
     ];
+
     Vector { data: new_data }
 }

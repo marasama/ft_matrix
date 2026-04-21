@@ -16,7 +16,7 @@ impl<K: Float> Vector<K> {
             .iter()
             .map(|a| *a * *a)
             .fold(K::zero(), |acc, x| x + acc)
-            .sqrt()
+            .powf(K::from(0.5).unwrap())
             .to_f32()
             .unwrap()
     }
@@ -25,7 +25,7 @@ impl<K: Float> Vector<K> {
             .iter()
             .map(|a| *a * *a)
             .fold(K::zero(), |acc, x| x + acc)
-            .sqrt()
+            .powf(K::from(0.5).unwrap())
             .to_f32()
             .unwrap()
     }

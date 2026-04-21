@@ -1,5 +1,5 @@
-use crate::VECTOR_EPS;
 use super::*;
+use crate::VECTOR_EPS;
 use std::ops::Mul;
 
 impl<K> Add<Self> for Vector<K>
@@ -61,9 +61,7 @@ where
     K: Float,
 {
     pub fn new(new_data: Vec<K>) -> Vector<K> {
-        Vector {
-            data: new_data.clone(),
-        }
+        Vector { data: new_data }
     }
     /// Returns the size of Vector
     pub fn size(&self) -> usize {
