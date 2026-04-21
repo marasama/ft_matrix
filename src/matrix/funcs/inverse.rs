@@ -70,6 +70,9 @@ impl<K: Float> Matrix<K> {
                 }
                 piv_row += 1;
             }
+            else  {
+                return Err("Matrix is singular".into()); // Hata fırlatılmalı
+            }
             piv_col += 1;
         }
         Ok(idt_mat)
