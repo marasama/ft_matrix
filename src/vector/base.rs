@@ -1,6 +1,6 @@
 use super::*;
 use crate::VECTOR_EPS;
-use std::ops::Mul;
+use std::{io::Empty, ops::Mul};
 
 impl<K> Add<Self> for Vector<K>
 where
@@ -100,6 +100,10 @@ where
         for i in 0..self.size() {
             self.data[i] = self.data[i] * other;
         }
+    }
+
+    pub fn empty() -> Vector<K> {
+        Vector { data: vec![] }
     }
 }
 

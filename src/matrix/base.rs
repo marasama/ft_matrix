@@ -150,6 +150,14 @@ where
             *a = *a * scale;
         }
     }
+
+    pub fn empty() -> Matrix<K> {
+        Matrix {
+            data: vec![],
+            rows: 0,
+            cols: 0,
+        }
+    }
 }
 
 impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
