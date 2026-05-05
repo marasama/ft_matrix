@@ -32,7 +32,7 @@ impl<K: Float> Matrix<K> {
             self.cols, mat.rows,
             "Error: Need MxN and NxP size matrices for multiplication!"
         );
-        let mut new_matrix = vec![K::zero(); self.cols * mat.rows];
+        let mut new_matrix = vec![K::zero(); self.rows * mat.cols];
         for m in 0..self.rows {
             for p in 0..mat.cols {
                 let mut acc = K::zero();
@@ -55,7 +55,7 @@ impl<K: Float> Matrix<K> {
             self.cols, mat.rows,
             "Error: Need MxN and NxP size matrices for multiplication!"
         );
-        let mut new_matrix = vec![K::zero(); self.cols * mat.rows];
+        let mut new_matrix = vec![K::zero(); self.rows * mat.cols];
         for m in 0..self.rows {
             for p in 0..mat.cols {
                 let mut acc = K::zero();
