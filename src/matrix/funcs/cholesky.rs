@@ -11,10 +11,7 @@ impl<K: Float + AddAssign> Matrix<K> {
         );
         let mut new_data = vec![K::zero(); self.rows * self.cols];
 
-        let divider = self.data[0].sqrt();
-
         for r in 0..self.rows {
-            new_data[r * self.cols] = self.row_col_val(r, 0) / divider;
             for c in 0..=r {
                 let mut sum: K = K::zero();
                 for b in 0..c {
