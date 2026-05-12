@@ -1,7 +1,7 @@
 use crate::MATRIX_EPS;
 
 use super::*;
-use std::{ops::{Add, Index, Mul, Sub}, str::MatchIndices};
+use std::ops::Index;
 
 impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
     fn from(value: [[K; C]; R]) -> Self {
