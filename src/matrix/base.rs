@@ -135,6 +135,16 @@ where
         }
     }
 
+    pub fn add_ref(&mut self, other: &Matrix<K>)
+    where
+        K: AddAssign,
+    {
+        self.size_matcher(other);
+        for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
+            *a += *b;
+        }
+    }
+
     pub fn sub(&mut self, other: &Matrix<K>)
     where
         K: SubAssign,
@@ -144,6 +154,17 @@ where
             *a -= *b;
         }
     }
+
+    pub fn sub_ref(&mut self, other: &Matrix<K>)
+    where
+        K: SubAssign,
+    {
+        self.size_matcher(other);
+        for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
+            *a -= *b;
+        }
+    }
+
 
     pub fn scl(&mut self, scale: K) {
         for a in self.data.iter_mut() {

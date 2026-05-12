@@ -35,8 +35,7 @@ where
                 .map(|(a, b)| *a - *b)
                 .collect(),
         }
-    }
-}
+    } }
 
 impl<K> Mul<Self> for Vector<K>
 where
@@ -82,7 +81,35 @@ where
         }
     }
 
+    pub fn sub_ref(&mut self, other: &Vector<K>)
+    where
+        K: Sub,
+    {
+        assert_eq!(
+            self.data.len(),
+            other.data.len(),
+            "Error: Vector size mismatch!"
+        );
+        for i in 0..self.size() {
+            self.data[i] = self.data[i] - other.data[i];
+        }
+    }
+
     pub fn add(&mut self, other: &Vector<K>)
+    where
+        K: Add,
+    {
+        assert_eq!(
+            self.data.len(),
+            other.data.len(),
+            "Error: Vector size mismatch!"
+        );
+        for i in 0..self.size() {
+            self.data[i] = self.data[i] + other.data[i];
+        }
+    }
+    
+    pub fn add_ref(&mut self, other: &Vector<K>)
     where
         K: Add,
     {
