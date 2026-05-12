@@ -15,7 +15,7 @@ impl<K: Float> Matrix<K> {
         }
         Vector { data: new_val }
     }
-    pub fn mul_vec_ref(&mut self, vec: &Vector<K>) -> Vector<K> {
+    pub fn mul_vec_ref(&self, vec: &Vector<K>) -> Vector<K> {
         assert_eq!(self.cols, vec.size());
         let mut new_val = vec![K::zero(); self.rows];
         for row_idx in 0..self.rows {
@@ -50,7 +50,7 @@ impl<K: Float> Matrix<K> {
             cols: mat.cols,
         }
     }
-    pub fn mul_mat_ref(&mut self, mat: &Matrix<K>) -> Matrix<K> {
+    pub fn mul_mat_ref(&self, mat: &Matrix<K>) -> Matrix<K> {
         assert_eq!(
             self.cols, mat.rows,
             "Error: Need MxN and NxP size matrices for multiplication!"
