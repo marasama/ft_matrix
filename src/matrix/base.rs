@@ -75,7 +75,7 @@ where
         }
     }
 
-    pub fn add_ref(&mut self, other: &Matrix<K>) -> Matrix<K>
+    pub fn add_ref(&self, other: &Matrix<K>) -> Matrix<K>
     where
         K: AddAssign,
     {
@@ -97,7 +97,7 @@ where
         }
     }
 
-    pub fn sub_ref(&mut self, other: &Matrix<K>) -> Matrix<K>
+    pub fn sub_ref(&self, other: &Matrix<K>) -> Matrix<K>
     where
         K: SubAssign,
     {

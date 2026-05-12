@@ -28,7 +28,7 @@ where
         }
     }
 
-    pub fn sub_ref(&mut self, other: &Vector<K>) -> Vector<K>
+    pub fn sub_ref(&self, other: &Vector<K>) -> Vector<K>
     where
         K: Sub,
     {
@@ -59,7 +59,7 @@ where
         }
     }
     
-    pub fn add_ref(&mut self, other: &Vector<K>) -> Vector<K>
+    pub fn add_ref(&self, other: &Vector<K>) -> Vector<K>
     where
         K: Add,
     {
