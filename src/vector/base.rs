@@ -2,59 +2,6 @@ use super::*;
 use crate::VECTOR_EPS;
 use std::{io::Empty, ops::Mul};
 
-impl<K> Add<Self> for Vector<K>
-where
-    K: Float,
-{
-    type Output = Self;
-    fn add(self, rhs: Self) -> Self::Output {
-        assert_eq!(self.size(), rhs.size(), "Error: Size mismatch!");
-        Vector {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a + *b)
-                .collect(),
-        }
-    }
-}
-
-impl<K> Sub<Self> for Vector<K>
-where
-    K: Float,
-{
-    type Output = Self;
-    fn sub(self, rhs: Self) -> Self::Output {
-        assert_eq!(self.size(), rhs.size(), "Error: Size mismatch!");
-        Vector {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a - *b)
-                .collect(),
-        }
-    } }
-
-impl<K> Mul<Self> for Vector<K>
-where
-    K: Mul + Float,
-{
-    type Output = Self;
-    fn mul(self, rhs: Self) -> Self::Output {
-        assert_eq!(self.size(), rhs.size(), "Error: Size mismatch!");
-        Vector {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a * *b)
-                .collect(),
-        }
-    }
-}
-
 impl<K> Vector<K>
 where
     K: Float,

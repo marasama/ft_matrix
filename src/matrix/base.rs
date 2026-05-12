@@ -14,66 +14,6 @@ impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
     }
 }
 
-impl<K> Add<Self> for Matrix<K>
-where
-    K: Float,
-{
-    type Output = Self;
-    fn add(self, rhs: Self) -> Self::Output {
-        self.size_matcher(&rhs);
-        Matrix {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a + *b)
-                .collect(),
-            rows: self.rows,
-            cols: self.cols,
-        }
-    }
-}
-
-impl<K> Sub<Self> for Matrix<K>
-where
-    K: Float,
-{
-    type Output = Self;
-    fn sub(self, rhs: Self) -> Self::Output {
-        self.size_matcher(&rhs);
-        Matrix {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a - *b)
-                .collect(),
-            rows: self.rows,
-            cols: self.cols,
-        }
-    }
-}
-
-impl<K> Mul<Self> for Matrix<K>
-where
-    K: Mul + Float,
-{
-    type Output = Self;
-    fn mul(self, rhs: Self) -> Self::Output {
-        self.size_matcher(&rhs);
-        Matrix {
-            data: self
-                .data
-                .iter()
-                .zip(rhs.data.iter())
-                .map(|(a, b)| *a * *b)
-                .collect(),
-            rows: self.rows,
-            cols: self.cols,
-        }
-    }
-}
-
 impl<K> Matrix<K>
 where
     K: Float,
