@@ -1,7 +1,7 @@
 use crate::MATRIX_EPS;
 
 use super::*;
-use std::ops::{Add, Index, Mul, Sub};
+use std::{ops::{Add, Index, Mul, Sub}, str::MatchIndices};
 
 impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
     fn from(value: [[K; C]; R]) -> Self {
@@ -135,14 +135,16 @@ where
         }
     }
 
-    pub fn add_ref(&mut self, other: &Matrix<K>)
+    pub fn add_ref(&mut self, other: &Matrix<K>) -> Matrix<K>
     where
         K: AddAssign,
     {
         self.size_matcher(other);
-        for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
-            *a += *b;
+        let mut new_data = vec![K::zero(); self.rows * self.cols];
+        for i in 0..(self.rows * self.cols) {
+            new_data[i] = self.data[i] + other.data[i];
         }
+        Matrix { data: new_data, rows: self.rows, cols: self.cols }
     }
 
     pub fn sub(&mut self, other: &Matrix<K>)
@@ -155,14 +157,16 @@ where
         }
     }
 
-    pub fn sub_ref(&mut self, other: &Matrix<K>)
+    pub fn sub_ref(&mut self, other: &Matrix<K>) -> Matrix<K>
     where
         K: SubAssign,
     {
         self.size_matcher(other);
-        for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
-            *a -= *b;
+        let mut new_data = vec![K::zero(); self.rows * self.cols];
+        for i in 0..(self.rows * self.cols) {
+            new_data[i] = self.data[i] - other.data[i];
         }
+        Matrix { data: new_data, rows: self.rows, cols: self.cols }
     }
 
 

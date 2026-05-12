@@ -81,7 +81,7 @@ where
         }
     }
 
-    pub fn sub_ref(&mut self, other: &Vector<K>)
+    pub fn sub_ref(&mut self, other: &Vector<K>) -> Vector<K>
     where
         K: Sub,
     {
@@ -90,9 +90,12 @@ where
             other.data.len(),
             "Error: Vector size mismatch!"
         );
+        let mut new_data = vec![K::zero(); self.size()];
         for i in 0..self.size() {
-            self.data[i] = self.data[i] - other.data[i];
+            new_data[i] = self.data[i] - other.data[i];
         }
+        Vector { data: new_data }
+
     }
 
     pub fn add(&mut self, other: &Vector<K>)
@@ -109,7 +112,7 @@ where
         }
     }
     
-    pub fn add_ref(&mut self, other: &Vector<K>)
+    pub fn add_ref(&mut self, other: &Vector<K>) -> Vector<K>
     where
         K: Add,
     {
@@ -118,9 +121,11 @@ where
             other.data.len(),
             "Error: Vector size mismatch!"
         );
+        let mut new_data = vec![K::zero(); self.size()];
         for i in 0..self.size() {
-            self.data[i] = self.data[i] + other.data[i];
+            new_data[i] = self.data[i] + other.data[i];
         }
+        Vector { data: new_data }
     }
 
     pub fn scl(&mut self, other: K) {
