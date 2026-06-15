@@ -19,7 +19,7 @@ impl<K: Float> Matrix<K> {
     // Gauss elemesiyle aynı sadece uyguladığın
     // eleme işlemlerinin aynısını birim matrise de
     // uyguluyorsun
-    pub fn inverse(&mut self) -> Result<Matrix<K>, Box<dyn Error>> {
+    pub fn inverse(&self) -> Result<Matrix<K>, Box<dyn Error>> {
         assert_eq!(
             self.rows, self.cols,
             "Error: Matrix must be NxN size to calculate its inverse!"
