@@ -1,3 +1,4 @@
+use crate::vector::Vector;
 use crate::MATRIX_EPS;
 
 use super::*;
@@ -140,6 +141,16 @@ where
             data: vec![],
             rows: 0,
             cols: 0,
+        }
+    }
+
+    pub fn to_vector(&self) -> Vector<K> {
+        assert_eq!(
+            self.cols, 1,
+            "To convert to Vector, must be one column matrix!"
+        );
+        Vector {
+            data: self.data.clone(),
         }
     }
 }
