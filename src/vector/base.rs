@@ -1,4 +1,5 @@
 use super::*;
+use crate::matrix::Matrix;
 use crate::VECTOR_EPS;
 use std::{io::Empty, ops::Mul};
 
@@ -90,6 +91,14 @@ where
 
     pub fn empty() -> Vector<K> {
         Vector { data: vec![] }
+    }
+
+    pub fn to_matrix(&self) -> Matrix<K> {
+        Matrix {
+            data: self.data.clone(),
+            rows: self.size(),
+            cols: 1,
+        }
     }
 }
 

@@ -1,6 +1,6 @@
-use std::error::Error;
 use crate::matrix::Matrix;
 use num_traits::Float;
+use std::error::Error;
 
 /// Returns a square identity matrix at given size
 pub fn identity_matrix<K: Float>(r_c: usize) -> Matrix<K> {
@@ -69,8 +69,7 @@ impl<K: Float> Matrix<K> {
                     }
                 }
                 piv_row += 1;
-            }
-            else  {
+            } else {
                 return Err("Matrix is singular".into()); // Hata fırlatılmalı
             }
             piv_col += 1;
