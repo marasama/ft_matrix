@@ -75,7 +75,7 @@ where
         }
     }
 
-    pub fn add_ref(&self, other: &Matrix<K>) -> Matrix<K>
+    pub fn add_mat_ref(&self, other: &Matrix<K>) -> Matrix<K>
     where
         K: AddAssign,
     {
@@ -84,7 +84,11 @@ where
         for i in 0..(self.rows * self.cols) {
             new_data[i] = self.data[i] + other.data[i];
         }
-        Matrix { data: new_data, rows: self.rows, cols: self.cols }
+        Matrix {
+            data: new_data,
+            rows: self.rows,
+            cols: self.cols,
+        }
     }
 
     pub fn sub(&mut self, other: &Matrix<K>)
@@ -97,7 +101,7 @@ where
         }
     }
 
-    pub fn sub_ref(&self, other: &Matrix<K>) -> Matrix<K>
+    pub fn sub_mat_ref(&self, other: &Matrix<K>) -> Matrix<K>
     where
         K: SubAssign,
     {
@@ -106,13 +110,28 @@ where
         for i in 0..(self.rows * self.cols) {
             new_data[i] = self.data[i] - other.data[i];
         }
-        Matrix { data: new_data, rows: self.rows, cols: self.cols }
+        Matrix {
+            data: new_data,
+            rows: self.rows,
+            cols: self.cols,
+        }
     }
-
 
     pub fn scl(&mut self, scale: K) {
         for a in self.data.iter_mut() {
             *a = *a * scale;
+        }
+    }
+
+    pub fn scl_mat_ref(&self, scale: K) -> Matrix<K> {
+        let mut new_data = vec![K::zero(); self.rows * self.cols];
+        for i in 0..(self.rows * self.cols) {
+            new_data[i] = self.data[i] * scale;
+        }
+        Matrix {
+            data: new_data,
+            rows: self.rows,
+            cols: self.cols,
         }
     }
 

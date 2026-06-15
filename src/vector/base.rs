@@ -28,7 +28,7 @@ where
         }
     }
 
-    pub fn sub_ref(&self, other: &Vector<K>) -> Vector<K>
+    pub fn sub_vec_ref(&self, other: &Vector<K>) -> Vector<K>
     where
         K: Sub,
     {
@@ -42,7 +42,6 @@ where
             new_data[i] = self.data[i] - other.data[i];
         }
         Vector { data: new_data }
-
     }
 
     pub fn add(&mut self, other: &Vector<K>)
@@ -58,8 +57,8 @@ where
             self.data[i] = self.data[i] + other.data[i];
         }
     }
-    
-    pub fn add_ref(&self, other: &Vector<K>) -> Vector<K>
+
+    pub fn add_vec_ref(&self, other: &Vector<K>) -> Vector<K>
     where
         K: Add,
     {
@@ -79,6 +78,14 @@ where
         for i in 0..self.size() {
             self.data[i] = self.data[i] * other;
         }
+    }
+
+    pub fn scl_vec_ref(&mut self, other: K) -> Vector<K> {
+        let mut new_data = vec![K::zero(); self.size()];
+        for i in 0..self.size() {
+            new_data[i] = self.data[i] * other;
+        }
+        Vector { data: new_data }
     }
 
     pub fn empty() -> Vector<K> {
