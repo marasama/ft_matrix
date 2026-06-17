@@ -1,6 +1,7 @@
 pub mod cholesky;
 pub mod determinant;
 pub mod each;
+pub mod edit_mat;
 pub mod inverse;
 pub mod multiply;
 pub mod rank;
