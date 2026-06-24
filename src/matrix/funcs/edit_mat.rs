@@ -1,57 +1,52 @@
 use crate::matrix::Matrix;
 use num_traits::Float;
 
-impl<K: Float> Matrix<K> {
+impl<K: Float, const R: usize, const C: usize> Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
     // Creates a new matrix from the selected rows
-    pub fn get_rows(&self, rows: &[usize]) -> Matrix<K> {
-        for r in rows {
-            assert!(
-                *r < self.rows,
-                "Selected rows must be smaller than the row size of the main matrix!"
-            );
-        }
-
-        let mut new_data = vec![K::zero(); rows.len() * self.cols];
+    pub fn get_rows<const M: usize>(&self, rows: &[usize; M]) -> Matrix<K, M, C>
+    where
+        [(); M * C]:,
+    {
+        let mut new_data = [K::zero(); M * C];
 
         for (i, &r) in rows.iter().enumerate() {
-            let src_start = r * self.cols;
-            let src_end = src_start + self.cols;
+            assert!(
+                r < R,
+                "Selected rows must be smaller than the row size of the main matrix!"
+            );
+            let src_start = r * C;
+            let src_end = src_start + C;
             let src_slice = &self.data[src_start..src_end];
 
-            let dest_start = i * self.cols;
-            let dest_end = dest_start + self.cols;
+            let dest_start = i * C;
+            let dest_end = dest_start + C;
             let dest_slice = &mut new_data[dest_start..dest_end];
 
             dest_slice.copy_from_slice(src_slice);
         }
 
-        Matrix {
-            data: new_data,
-            rows: rows.len(),
-            cols: self.cols,
-        }
+        Matrix { data: new_data }
     }
     // Creates a new matrix from the selected rows
-    pub fn get_cols(&self, cols: &[usize]) -> Matrix<K> {
-        for &c in cols {
-            assert!(
-                c < self.cols,
-                "Selected columns must be smaller than the column size of the main matrix!"
-            );
-        }
-
-        let mut new_data = vec![K::zero(); cols.len() * self.rows];
+    pub fn get_cols<const M: usize>(&self, cols: &[usize; M]) -> Matrix<K, R, M>
+    where
+        [(); R * M]:,
+    {
+        let mut new_data = [K::zero(); R * M];
 
         for (i, &c) in cols.iter().enumerate() {
-            for r in 0..self.rows {
-                new_data[r * cols.len() + i] = self.data[r * self.cols + c];
+            assert!(
+                c < C,
+                "Selected columns must be smaller than the column size of the main matrix!"
+            );
+            for r in 0..R {
+                new_data[r * M + i] = self.data[r * C + c];
             }
         }
 
-        Matrix {
-            data: new_data,
-            rows: self.rows,
-            cols: cols.len(),
-        }
+        Matrix { data: new_data }
     }
 }

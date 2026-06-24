@@ -6,8 +6,8 @@ use std::{
 };
 
 #[derive(Clone)]
-pub struct Vector<K: Float> {
-    pub data: Vec<K>,
+pub struct Vector<K: Float, const N: usize> {
+    pub data: [K; N],
 }
 
 mod printing;

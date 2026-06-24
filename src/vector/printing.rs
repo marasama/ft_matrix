@@ -1,7 +1,7 @@
 use super::*;
 use std::any::type_name_of_val;
 
-impl<K> fmt::Display for Vector<K>
+impl<K, const N: usize> fmt::Display for Vector<K, N>
 where
     K: Display + Float,
 {
@@ -20,7 +20,7 @@ where
     }
 }
 
-impl<K> fmt::Debug for Vector<K>
+impl<K, const N: usize> fmt::Debug for Vector<K, N>
 where
     K: Debug + Display + Float,
 {

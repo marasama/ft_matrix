@@ -1,7 +1,9 @@
+#![feature(generic_const_exprs)]
+#![allow(incomplete_features)]
 use matrix::matrix::Matrix;
 
 fn main() {
-    let mut u = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+    let mut u: Matrix<f64, 3, 3> = Matrix::from([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
     println!("{}", u.inverse().unwrap());
     // [1.0, 0.0, 0.0]
     // [0.0, 1.0, 0.0]

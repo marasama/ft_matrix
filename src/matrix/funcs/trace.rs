@@ -1,15 +1,15 @@
 use crate::matrix::Matrix;
 use num_traits::Float;
 
-impl<K: Float> Matrix<K> {
+impl<K: Float, const R: usize> Matrix<K, R, R>
+where
+    [(); R * R]:,
+{
+    /// Only square matrices have a trace!
     pub fn trace(&mut self) -> K {
-        assert_eq!(
-            self.rows, self.cols,
-            "Error: Only square matrices have a trace!"
-        );
         let mut trace_val = K::zero();
-        for i in 0..self.rows {
-            trace_val = trace_val + self.row_col_val(i, i);
+        for i in 0..R {
+            trace_val = trace_val + self.data[i * R + i];
         }
         trace_val
     }

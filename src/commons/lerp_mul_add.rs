@@ -4,44 +4,35 @@ use num_traits::Float;
 use num_traits::MulAdd;
 use std::ops::Sub;
 
-pub fn lerp<V>(u: V, v: V, t: f32) -> V
+pub fn lerp<V, K>(u: V, v: V, t: K) -> V
 where
-    V: MulAdd<f32, V, Output = V> + Sub<Output = V> + Clone,
+    V: MulAdd<K, V, Output = V> + Sub<Output = V> + Clone,
+    K: Float,
 {
-    let u_clone = u.clone();
-    (v - u_clone).mul_add(t, u)
+    (v - u.clone()).mul_add(t, u)
 }
 
-impl<K: Float> MulAdd<f32, Vector<K>> for Vector<K> {
+impl<K: Float, const N: usize> MulAdd<K, Vector<K, N>> for Vector<K, N> {
     type Output = Self;
-    fn mul_add(self, a: f32, b: Vector<K>) -> Self::Output {
-        assert_eq!(self.size(), b.size(), "Error: Size mismatch!");
-        let scalar: K = K::from(a).expect("Error: Conversion error at f32 to K!");
-        Vector {
-            data: self
-                .data
-                .iter()
-                .zip(b.data.iter())
-                .map(|(a, b)| a.mul_add(scalar, *b))
-                .collect(),
+    fn mul_add(self, a: K, b: Vector<K, N>) -> Self::Output {
+        let mut new_data = [K::zero(); N];
+        for i in 0..N {
+            new_data[i] = self.data[i].mul_add(a, b.data[i]);
         }
+        Vector { data: new_data }
     }
 }
 
-impl<K: Float> MulAdd<f32, Matrix<K>> for Matrix<K> {
+impl<K: Float, const R: usize, const C: usize> MulAdd<K, Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
     type Output = Self;
-    fn mul_add(self, a: f32, b: Matrix<K>) -> Self::Output {
-        self.size_matcher(&b);
-        let scalar: K = K::from(a).expect("Error: Conversion error at f32 to K!");
-        Matrix {
-            data: self
-                .data
-                .iter()
-                .zip(b.data.iter())
-                .map(|(a, b)| a.mul_add(scalar, *b))
-                .collect(),
-            rows: self.rows,
-            cols: self.cols,
+    fn mul_add(self, a: K, b: Matrix<K, R, C>) -> Self::Output {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
+            new_data[i] = self.data[i].mul_add(a, b.data[i]);
         }
+        Matrix { data: new_data }
     }
 }

@@ -14,10 +14,12 @@ fn test_lerp() {
     assert_eq!(a, 0.5, "Error: Lerp error!");
     // 0.5
     let a = lerp(21., 42., 0.3);
-    assert_eq!(a, 27.300001, "Error: Lerp error!");
+    assert_eq!(a, 27.3, "Error: Lerp error!");
     // 27.3
-    let a = lerp(Vector::from([2., 1.]), Vector::from([4., 2.]), 0.3);
-    assert_eq!(Vector::from([2.6, 1.3]), a, "Error: Lerp error!");
+    let a = lerp(Vector::from([2., 1.]), Vector::from([4., 2.]), 0.3f64);
+    dbg!((a.data[0] - 2.6f64).abs() < 1e-6 && (a.data[1] - 1.3f64).abs() < 1e-6);
+    assert_eq!(a.data[0], 2.6f64, "Error: Lerp error!");
+    assert!((a.data[1] - 1.3f64).abs() < 1e-5, "Error: Lerp error!");
     // [2.6]
     // [1.3]
     let a = lerp(

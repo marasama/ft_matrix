@@ -3,8 +3,8 @@ use crate::vector::Vector;
 
 #[test]
 fn new_matrix_from_vec() {
-    let vec_array = vec![1.2, 4.3, 4.2, 2.4, 8.6, 8.4, 3.6, 12.9, 12.6];
-    let a = Matrix::new(vec_array.clone(), 3, 3);
+    let array = [[1.2, 4.3, 4.2], [2.4, 8.6, 8.4], [3.6, 12.9, 12.6]];
+    let a = Matrix::from(array);
     let array: [[f64; 3]; 3] = [[1.2, 4.3, 4.2], [2.4, 8.6, 8.4], [3.6, 12.9, 12.6]];
     let b = Matrix::from(array);
     assert_eq!(a, b);
@@ -12,8 +12,8 @@ fn new_matrix_from_vec() {
 
 #[test]
 fn new_matrix_from_array() {
-    let vec_array = vec![1.2, 4.3, 4.2, 2.4, 8.6, 8.4, 3.6, 12.9, 12.6];
-    let a = Matrix::new(vec_array.clone(), 3, 3);
+    let array = [[1.2, 4.3, 4.2], [2.4, 8.6, 8.4], [3.6, 12.9, 12.6]];
+    let a = Matrix::from(array);
     let array: [[f64; 3]; 3] = [[1.2, 4.3, 4.2], [2.4, 8.6, 8.4], [3.6, 12.9, 12.6]];
     let b = Matrix::from(array);
     assert_eq!(a, b);
@@ -44,9 +44,10 @@ fn matrix_add() {
 
 #[test]
 fn matrix_sub() {
-    let mut a: Matrix<f32> = Matrix::from([[1.0, 2.0, 4.0], [2.0, 4.0, 8.0], [4.0, 8.0, 16.0]]);
-    let b: Matrix<f32> = Matrix::from([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]);
-    let res: Matrix<f32> = Matrix::from([[0., 1., 3.], [1., 3., 7.], [3., 7., 15.]]);
+    let mut a: Matrix<f32, 3, 3> =
+        Matrix::from([[1.0, 2.0, 4.0], [2.0, 4.0, 8.0], [4.0, 8.0, 16.0]]);
+    let b: Matrix<f32, 3, 3> = Matrix::from([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]);
+    let res: Matrix<f32, 3, 3> = Matrix::from([[0., 1., 3.], [1., 3., 7.], [3., 7., 15.]]);
     a.sub(&b);
     assert_eq!(a, res);
 }
@@ -64,17 +65,17 @@ fn matrix_scl() {
 fn multiply_test1() {
     let mut u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Vector::from([4., 2.]);
-    assert_eq!((Vector::from([4., 2.])), u.mul_vec(v));
+    assert_eq!((Vector::from([4., 2.])), u.mul_vec(&v));
     // [4.]
     // [2.]
     let mut u = Matrix::from([[2., 0.], [0., 2.]]);
     let v = Vector::from([4., 2.]);
-    assert_eq!(Vector::from([8., 4.]), u.mul_vec(v));
+    assert_eq!(Vector::from([8., 4.]), u.mul_vec(&v));
     // [8.]
     // [4.]
     let mut u = Matrix::from([[2., -2.], [-2., 2.]]);
     let v = Vector::from([4., 2.]);
-    assert_eq!(Vector::from([4., -4.]), u.mul_vec(v));
+    assert_eq!(Vector::from([4., -4.]), u.mul_vec(&v));
     // [4.]
     // [-4.]
 }
@@ -83,17 +84,17 @@ fn multiply_test1() {
 fn multiply_test2() {
     let mut u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Matrix::from([[1., 0.], [0., 1.]]);
-    println!("{}", u.mul_mat(v));
+    println!("{}", u.mul_mat(&v));
     // [1., 0.]
     // [0., 1.]
     let mut u = Matrix::from([[1., 0.], [0., 1.]]);
     let v = Matrix::from([[2., 1.], [4., 2.]]);
-    println!("{}", u.mul_mat(v));
+    println!("{}", u.mul_mat(&v));
     // [2., 1.]
     // [4., 2.]
     let mut u = Matrix::from([[3., -5.], [6., 8.]]);
     let v = Matrix::from([[2., 1.], [4., 2.]]);
-    println!("{}", u.mul_mat(v));
+    println!("{}", u.mul_mat(&v));
     // [-14., -7.]
     // [44., 22.]
 }

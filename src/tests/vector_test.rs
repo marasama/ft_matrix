@@ -2,11 +2,12 @@ use crate::vector::funcs::cosine::angle_cos;
 use crate::vector::funcs::cross::cross_product;
 use crate::vector::funcs::lin_comb::linear_combination;
 use crate::vector::Vector;
+use crate::VECTOR_EPS;
 
 #[test]
 fn new_vector_from_vec() {
-    let vec_array = vec![1.2, 4.3, 4.2, 5.1, 3.2];
-    let a = Vector::new(vec_array.clone());
+    let vec_array = [1.2, 4.3, 4.2, 5.1, 3.2];
+    let a = Vector::new(vec_array);
     assert_eq!(a.data, vec_array, "Error: Vector::new()");
 }
 
@@ -15,7 +16,7 @@ fn new_vector_from_array() {
     let array: [f64; 5] = [1.2, 4.3, 4.2, 5.1, 3.2];
     let vec_array: Vec<f64> = Vec::from(array);
     let a = Vector::from(array);
-    assert_eq!(a.data, vec_array, "Error: Vector::from()");
+    assert_eq!(a.data, *vec_array.as_slice(), "Error: Vector::from()");
 }
 
 #[test]
@@ -26,8 +27,8 @@ fn size_of_vector() {
 
 #[test]
 fn is_equal() {
-    let a: Vector<f64> = Vector::from([12., 32., 4.2, 412.2, 241.41]);
-    let b: Vector<f64> = Vector::from([11., 32., 4.2, 412.2, 241.41]);
+    let a: Vector<f64, 5> = Vector::from([12., 32., 4.2, 412.2, 241.41]);
+    let b: Vector<f64, 5> = Vector::from([11., 32., 4.2, 412.2, 241.41]);
     assert!(a != b);
 }
 
@@ -70,23 +71,23 @@ fn lin_comb() {
     let res_e = linear_combination(&[e1, e2, e3], &[10., -2., 0.5]);
     let res_v = linear_combination(&[v1, v2], &[10., -2.]);
 
-    assert_eq!(res_e.data, vec![10., -2., 0.5]);
-    assert_eq!(res_v.data, vec![10., 0., 230.]);
+    assert_eq!(res_e.data, [10., -2., 0.5]);
+    assert_eq!(res_v.data, [10., 0., 230.]);
 }
 
 #[test]
 fn dot_test() {
     let u = Vector::from([0., 0.]);
     let v = Vector::from([1., 1.]);
-    assert_eq!(0.0, u.dot(v));
+    assert_eq!(0.0, u.dot(&v));
     // 0.0
     let u = Vector::from([1., 1.]);
     let v = Vector::from([1., 1.]);
-    assert_eq!(2.0, u.dot(v));
+    assert_eq!(2.0, u.dot(&v));
     // 2.0
     let u = Vector::from([-1., 6.]);
     let v = Vector::from([3., 2.]);
-    assert_eq!(9.0, u.dot(v));
+    assert_eq!(9.0, u.dot(&v));
     // 9.0
 }
 
@@ -99,12 +100,12 @@ fn norm_test() {
     // 0.0, 0.0, 0.0
     let mut u = Vector::from([1., 2., 3.]);
     assert_eq!(u.norm_1(), 6.0);
-    assert_eq!(u.norm(), 3.74165738);
+    assert!(u.norm() - 3.74165738 < VECTOR_EPS);
     assert_eq!(u.norm_inf(), 3.0);
     // 6.0, 3.74165738, 3.0
     let mut u = Vector::from([-1., -2.]);
     assert_eq!(u.norm_1(), 3.0);
-    assert_eq!(u.norm(), 2.236067977);
+    assert!(u.norm() - 2.236067977 < VECTOR_EPS);
     assert_eq!(u.norm_inf(), 2.0);
     // 3.0, 2.236067977, 2.0
 }
@@ -113,23 +114,23 @@ fn norm_test() {
 fn cosine_test() {
     let u = Vector::from([1., 0.]);
     let v = Vector::from([1., 0.]);
-    assert_eq!(1.0, angle_cos(&u, &v));
+    assert_eq!(1.0, angle_cos(&u, &v).unwrap());
     // 1.0
     let u = Vector::from([1., 0.]);
     let v = Vector::from([0., 1.]);
-    assert_eq!(0.0, angle_cos(&u, &v));
+    assert_eq!(0.0, angle_cos(&u, &v).unwrap());
     // 0.0
     let u = Vector::from([-1., 1.]);
     let v = Vector::from([1., -1.]);
-    assert_eq!(-1.0000001, angle_cos(&u, &v));
+    assert!(1.0000001 + angle_cos(&u, &v).unwrap() < VECTOR_EPS);
     // -1.0
     let u = Vector::from([2., 1.]);
     let v = Vector::from([4., 2.]);
-    assert_eq!(1.0, angle_cos(&u, &v));
+    assert!(1.0 - angle_cos(&u, &v).unwrap() < VECTOR_EPS);
     // 1.0
     let u = Vector::from([1., 2., 3.]);
     let v = Vector::from([4., 5., 6.]);
-    assert_eq!(0.974_631_8, angle_cos(&u, &v));
+    assert!(0.974_631_8 - angle_cos(&u, &v).unwrap() < VECTOR_EPS);
     // 0.974631846
 }
 

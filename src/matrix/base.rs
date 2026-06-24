@@ -2,120 +2,80 @@ use crate::vector::Vector;
 use crate::MATRIX_EPS;
 
 use super::*;
-use std::ops::Index;
+use std::ops::{Add, Index, Sub};
 
-impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K> {
+impl<K: Float, const C: usize, const R: usize> From<[[K; C]; R]> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
     fn from(value: [[K; C]; R]) -> Self {
-        let new_vec: Vec<K> = value.into_iter().flatten().collect();
-        Matrix {
-            data: new_vec.to_owned(),
-            rows: R,
-            cols: C,
-        }
+        let mut data = [K::zero(); R * C];
+        data.copy_from_slice(value.as_flattened());
+        Matrix { data }
     }
 }
 
-impl<K> Matrix<K>
+impl<K, const R: usize, const C: usize> Matrix<K, R, C>
 where
     K: Float,
+    [(); R * C]:,
 {
-    pub fn new(new_data: Vec<K>, r: usize, c: usize) -> Self {
-        assert!(
-            new_data.len() == r * c,
-            "Error: Row and column size mismatch"
-        );
-        Matrix {
-            data: new_data,
-            rows: r,
-            cols: c,
-        }
+    pub fn new(new_data: [K; R * C]) -> Self {
+        Matrix { data: new_data }
     }
     /// Size value function
     /// Returns (rows, cols) in usize
     pub fn size(&self) -> (usize, usize) {
-        (self.rows, self.cols)
+        (R, C)
     }
 
     pub fn print_size(&self) {
-        println!("Rows: {} X Cols: {}", self.rows, self.cols);
-    }
-
-    pub fn size_matcher(&self, other: &Matrix<K>) {
-        assert_eq!(self.data.len(), other.data.len(), "Error: Size mismatch");
-        assert_eq!(self.rows, other.rows, "Error: Row size mismatch");
-        assert_eq!(self.cols, other.cols, "Error: Columns size mismatch");
-    }
-
-    pub fn size_checker(&self, other: &Matrix<K>) -> bool {
-        if self.data.len() != other.data.len() {
-            return false;
-        }
-        if self.rows != other.rows {
-            return false;
-        }
-        if self.cols != other.cols {
-            return false;
-        }
-        true
+        println!("Rows: {} X Cols: {}", R, C);
     }
 
     /// Returns the value from row and column index
     pub fn row_col_val(&self, r: usize, c: usize) -> K {
-        assert!(self.rows > r);
-        assert!(self.cols > c);
-        self.data[self.cols * r + c]
+        self.data[C * r + c]
     }
 
-    pub fn add(&mut self, other: &Matrix<K>)
+    pub fn add(&mut self, other: &Matrix<K, R, C>)
     where
         K: AddAssign,
     {
-        self.size_matcher(other);
         for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
             *a += *b;
         }
     }
 
-    pub fn add_mat_ref(&self, other: &Matrix<K>) -> Matrix<K>
+    pub fn add_mat_ref(&self, other: &Matrix<K, R, C>) -> Matrix<K, R, C>
     where
         K: AddAssign,
     {
-        self.size_matcher(other);
-        let mut new_data = vec![K::zero(); self.rows * self.cols];
-        for i in 0..(self.rows * self.cols) {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
             new_data[i] = self.data[i] + other.data[i];
         }
-        Matrix {
-            data: new_data,
-            rows: self.rows,
-            cols: self.cols,
-        }
+        Matrix { data: new_data }
     }
 
-    pub fn sub(&mut self, other: &Matrix<K>)
+    pub fn sub(&mut self, other: &Matrix<K, R, C>)
     where
         K: SubAssign,
     {
-        self.size_matcher(other);
         for (a, b) in self.data.iter_mut().zip(other.data.iter()) {
             *a -= *b;
         }
     }
 
-    pub fn sub_mat_ref(&self, other: &Matrix<K>) -> Matrix<K>
+    pub fn sub_mat_ref(&self, other: &Matrix<K, R, C>) -> Matrix<K, R, C>
     where
         K: SubAssign,
     {
-        self.size_matcher(other);
-        let mut new_data = vec![K::zero(); self.rows * self.cols];
-        for i in 0..(self.rows * self.cols) {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
             new_data[i] = self.data[i] - other.data[i];
         }
-        Matrix {
-            data: new_data,
-            rows: self.rows,
-            cols: self.cols,
-        }
+        Matrix { data: new_data }
     }
 
     pub fn scl(&mut self, scale: K) {
@@ -124,39 +84,20 @@ where
         }
     }
 
-    pub fn scl_mat_ref(&self, scale: K) -> Matrix<K> {
-        let mut new_data = vec![K::zero(); self.rows * self.cols];
-        for i in 0..(self.rows * self.cols) {
+    pub fn scl_mat_ref(&self, scale: K) -> Matrix<K, R, C> {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
             new_data[i] = self.data[i] * scale;
         }
-        Matrix {
-            data: new_data,
-            rows: self.rows,
-            cols: self.cols,
-        }
-    }
-
-    pub fn empty() -> Matrix<K> {
-        Matrix {
-            data: vec![],
-            rows: 0,
-            cols: 0,
-        }
-    }
-
-    pub fn to_vector(&self) -> Vector<K> {
-        assert_eq!(
-            self.cols, 1,
-            "To convert to Vector, must be one column matrix!"
-        );
-        Vector {
-            data: self.data.clone(),
-        }
+        Matrix { data: new_data }
     }
 }
 
-impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
-    fn eq(&self, other: &Matrix<K>) -> bool {
+impl<K: Float, const R: usize, const C: usize> PartialEq<Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
+    fn eq(&self, other: &Matrix<K, R, C>) -> bool {
         for (a, b) in self.data.iter().zip(&other.data) {
             if (*a - *b).abs() > K::from(MATRIX_EPS).unwrap_or(K::epsilon()) {
                 return false;
@@ -166,9 +107,85 @@ impl<K: Float> PartialEq<Matrix<K>> for Matrix<K> {
     }
 }
 
-impl<K: Float> Index<usize> for Matrix<K> {
+impl<K: Float, const R: usize, const C: usize> Index<usize> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
     type Output = K;
     fn index(&self, index: usize) -> &Self::Output {
         &self.data[index]
+    }
+}
+
+impl<K: Float> Matrix<K, 0, 0> {
+    pub fn empty() -> Self {
+        Matrix { data: [] }
+    }
+}
+
+impl<K: Float, const R: usize> Matrix<K, R, 1>
+where
+    [(); R * 1]:,
+{
+    pub fn to_vector(&self) -> Vector<K, R>
+    where
+        [(); R * 1]:,
+    {
+        let mut data = [K::zero(); R];
+        data.copy_from_slice(&self.data);
+        Vector { data }
+    }
+}
+
+impl<K: Float, const R: usize, const C: usize> Add<&Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
+    type Output = Self;
+    fn add(self, rhs: &Matrix<K, R, C>) -> Self::Output {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
+            new_data[i] = self.data[i] + rhs.data[i];
+        }
+        Matrix { data: new_data }
+    }
+}
+impl<K: Float, const R: usize, const C: usize> Add<Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
+    type Output = Self;
+    fn add(self, rhs: Matrix<K, R, C>) -> Self::Output {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
+            new_data[i] = self.data[i] + rhs.data[i];
+        }
+        Matrix { data: new_data }
+    }
+}
+impl<K: Float, const R: usize, const C: usize> Sub<&Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
+    type Output = Self;
+    fn sub(self, rhs: &Matrix<K, R, C>) -> Self::Output {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
+            new_data[i] = self.data[i] - rhs.data[i];
+        }
+        Matrix { data: new_data }
+    }
+}
+impl<K: Float, const R: usize, const C: usize> Sub<Matrix<K, R, C>> for Matrix<K, R, C>
+where
+    [(); R * C]:,
+{
+    type Output = Self;
+    fn sub(self, rhs: Matrix<K, R, C>) -> Self::Output {
+        let mut new_data = [K::zero(); R * C];
+        for i in 0..(R * C) {
+            new_data[i] = self.data[i] - rhs.data[i];
+        }
+        Matrix { data: new_data }
     }
 }
