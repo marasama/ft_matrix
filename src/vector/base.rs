@@ -13,6 +13,11 @@ where
         N
     }
 
+    pub fn zeros() -> Vector<K, N> {
+        Vector {
+            data: [K::zero(); N],
+        }
+    }
     pub fn sub(&mut self, other: &Vector<K, N>)
     where
         K: Sub,

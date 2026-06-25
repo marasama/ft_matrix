@@ -23,6 +23,12 @@ where
     pub fn new(new_data: [K; R * C]) -> Self {
         Matrix { data: new_data }
     }
+
+    pub fn zeros() -> Matrix<K, R, C> {
+        Matrix {
+            data: [K::zero(); R * C],
+        }
+    }
     /// Size value function
     /// Returns (rows, cols) in usize
     pub fn size(&self) -> (usize, usize) {
