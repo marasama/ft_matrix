@@ -22,4 +22,13 @@ impl<K: Float, const N: usize> Vector<K, N> {
             .map(|x| x.abs())
             .fold(K::zero(), |acc, x| if x > acc { x } else { acc })
     }
+    pub fn normalize(&self) -> Option<Vector<K, N>> {
+        let norm_val = self.norm();
+        if norm_val == K::zero() {
+            return None;
+        }
+        Some(Vector {
+            data: self.data.map(|a| a / norm_val),
+        })
+    }
 }
