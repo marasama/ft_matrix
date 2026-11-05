@@ -13,7 +13,7 @@ fn test_lerp() {
     let a = lerp(0., 1., 0.5);
     assert_eq!(a, 0.5, "Error: Lerp error!");
     // 0.5
-    let a = lerp(21., 42., 0.3);
+    let a = lerp(21f32, 42f32, 0.3f32);
     assert_eq!(a, 27.300001, "Error: Lerp error!");
     // 27.3
     let a = lerp(Vector::from([2., 1.]), Vector::from([4., 2.]), 0.3);

@@ -15,6 +15,11 @@ where
         self.data.len()
     }
 
+    pub fn zeros(n: usize) -> Vector<K> {
+        Vector {
+            data: vec![K::zero(); n],
+        }
+    }
     pub fn sub(&mut self, other: &Vector<K>)
     where
         K: Sub,
@@ -117,5 +122,33 @@ impl<K: Float> PartialEq<Vector<K>> for Vector<K> {
             }
         }
         true
+    }
+}
+
+impl<K: Float> Add<Vector<K>> for Vector<K> {
+    type Output = Self;
+    fn add(self, rhs: Vector<K>) -> Self::Output {
+        self.add_vec_ref(&rhs)
+    }
+}
+
+impl<K: Float> Add<&Vector<K>> for Vector<K> {
+    type Output = Self;
+    fn add(self, rhs: &Vector<K>) -> Self::Output {
+        self.add_vec_ref(rhs)
+    }
+}
+
+impl<K: Float> Sub<Vector<K>> for Vector<K> {
+    type Output = Self;
+    fn sub(self, rhs: Vector<K>) -> Self::Output {
+        self.sub_vec_ref(&rhs)
+    }
+}
+
+impl<K: Float> Sub<&Vector<K>> for Vector<K> {
+    type Output = Self;
+    fn sub(self, rhs: &Vector<K>) -> Self::Output {
+        self.sub_vec_ref(rhs)
     }
 }

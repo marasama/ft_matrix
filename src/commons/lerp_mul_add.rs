@@ -4,19 +4,19 @@ use num_traits::Float;
 use num_traits::MulAdd;
 use std::ops::Sub;
 
-pub fn lerp<V>(u: V, v: V, t: f32) -> V
+pub fn lerp<V, K>(u: V, v: V, t: K) -> V
 where
-    V: MulAdd<f32, V, Output = V> + Sub<Output = V> + Clone,
+    V: MulAdd<K, V, Output = V> + Sub<Output = V> + Clone,
+    K: Float,
 {
-    let u_clone = u.clone();
-    (v - u_clone).mul_add(t, u)
+    (v - u.clone()).mul_add(t, u)
 }
 
-impl<K: Float> MulAdd<f32, Vector<K>> for Vector<K> {
+impl<K: Float> MulAdd<K, Vector<K>> for Vector<K> {
     type Output = Self;
-    fn mul_add(self, a: f32, b: Vector<K>) -> Self::Output {
+    fn mul_add(self, a: K, b: Vector<K>) -> Self::Output {
         assert_eq!(self.size(), b.size(), "Error: Size mismatch!");
-        let scalar: K = K::from(a).expect("Error: Conversion error at f32 to K!");
+        let scalar: K = a;
         Vector {
             data: self
                 .data
@@ -28,11 +28,11 @@ impl<K: Float> MulAdd<f32, Vector<K>> for Vector<K> {
     }
 }
 
-impl<K: Float> MulAdd<f32, Matrix<K>> for Matrix<K> {
+impl<K: Float> MulAdd<K, Matrix<K>> for Matrix<K> {
     type Output = Self;
-    fn mul_add(self, a: f32, b: Matrix<K>) -> Self::Output {
+    fn mul_add(self, a: K, b: Matrix<K>) -> Self::Output {
         self.size_matcher(&b);
-        let scalar: K = K::from(a).expect("Error: Conversion error at f32 to K!");
+        let scalar: K = a;
         Matrix {
             data: self
                 .data

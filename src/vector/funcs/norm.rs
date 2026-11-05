@@ -37,4 +37,13 @@ impl<K: Float> Vector<K> {
             .to_f32()
             .unwrap()
     }
+    pub fn normalize(&self) -> Option<Vector<K>> {
+        let norm_val = K::from(self.norm_ref()).unwrap();
+        if norm_val == K::zero() {
+            return None;
+        }
+        Some(Vector {
+            data: self.data.iter().map(|a| *a / norm_val).collect(),
+        })
+    }
 }

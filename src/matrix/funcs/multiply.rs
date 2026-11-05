@@ -74,3 +74,17 @@ impl<K: Float> Matrix<K> {
         }
     }
 }
+
+impl<K: Float> std::ops::Mul<&Vector<K>> for Matrix<K> {
+    type Output = Vector<K>;
+    fn mul(self, rhs: &Vector<K>) -> Self::Output {
+        self.mul_vec_ref(rhs)
+    }
+}
+
+impl<K: Float> std::ops::Mul<&Matrix<K>> for Matrix<K> {
+    type Output = Matrix<K>;
+    fn mul(self, rhs: &Matrix<K>) -> Self::Output {
+        self.mul_mat_ref(rhs)
+    }
+}

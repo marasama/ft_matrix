@@ -30,6 +30,13 @@ where
             cols: c,
         }
     }
+    pub fn zeros(r: usize, c: usize) -> Matrix<K> {
+        Matrix {
+            data: vec![K::zero(); r * c],
+            rows: r,
+            cols: c,
+        }
+    }
     /// Size value function
     /// Returns (rows, cols) in usize
     pub fn size(&self) -> (usize, usize) {
@@ -170,5 +177,57 @@ impl<K: Float> Index<usize> for Matrix<K> {
     type Output = K;
     fn index(&self, index: usize) -> &Self::Output {
         &self.data[index]
+    }
+}
+
+impl<K: Float> std::ops::Add<Matrix<K>> for Matrix<K> {
+    type Output = Self;
+    fn add(self, rhs: Matrix<K>) -> Self::Output {
+        self.size_matcher(&rhs);
+        let data = self.data.iter().zip(&rhs.data).map(|(a, b)| *a + *b).collect();
+        Matrix {
+            data,
+            rows: self.rows,
+            cols: self.cols,
+        }
+    }
+}
+
+impl<K: Float> std::ops::Add<&Matrix<K>> for Matrix<K> {
+    type Output = Self;
+    fn add(self, rhs: &Matrix<K>) -> Self::Output {
+        self.size_matcher(rhs);
+        let data = self.data.iter().zip(&rhs.data).map(|(a, b)| *a + *b).collect();
+        Matrix {
+            data,
+            rows: self.rows,
+            cols: self.cols,
+        }
+    }
+}
+
+impl<K: Float> std::ops::Sub<Matrix<K>> for Matrix<K> {
+    type Output = Self;
+    fn sub(self, rhs: Matrix<K>) -> Self::Output {
+        self.size_matcher(&rhs);
+        let data = self.data.iter().zip(&rhs.data).map(|(a, b)| *a - *b).collect();
+        Matrix {
+            data,
+            rows: self.rows,
+            cols: self.cols,
+        }
+    }
+}
+
+impl<K: Float> std::ops::Sub<&Matrix<K>> for Matrix<K> {
+    type Output = Self;
+    fn sub(self, rhs: &Matrix<K>) -> Self::Output {
+        self.size_matcher(rhs);
+        let data = self.data.iter().zip(&rhs.data).map(|(a, b)| *a - *b).collect();
+        Matrix {
+            data,
+            rows: self.rows,
+            cols: self.cols,
+        }
     }
 }
